@@ -1,0 +1,1 @@
+(() => {const b=document.createElement('div');b.className='draft-banner';b.textContent='English review draft · 11 articles · awaiting final review';document.querySelector('.shell').before(b);})();

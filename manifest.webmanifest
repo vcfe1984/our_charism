@@ -1,0 +1,24 @@
+{
+  "id": "./",
+  "name": "Our Charism",
+  "short_name": "Our Charism",
+  "description": "English spiritual library of the Institute of the Incarnate Word \u00b7 review draft",
+  "lang": "en",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#faf7f2",
+  "theme_color": "#7a1a28",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
