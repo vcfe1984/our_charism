@@ -36,7 +36,7 @@ svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.6;stroke
 #progress{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));z-index:60;transition:width .1s linear}
 .topbar{position:sticky;top:0;z-index:40;height:calc(var(--top) + env(safe-area-inset-top));padding:env(safe-area-inset-top) 8px 0;display:flex;align-items:center;gap:4px;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:saturate(1.4) blur(14px);-webkit-backdrop-filter:saturate(1.4) blur(14px);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;padding:4px 6px;border-radius:10px;min-width:0}
-.brand img{border-radius:7px;flex:none}
+.brand img{flex:none;width:auto;height:38px}
 .brand span{display:flex;flex-direction:column;line-height:1.1;min-width:0}
 .brand b{font-family:var(--display);font-weight:600;font-size:21px;letter-spacing:.01em;white-space:nowrap}
 .brand small{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -100,7 +100,7 @@ h1.title{font-family:var(--display);font-weight:600;font-size:clamp(34px,6vw,50p
  radial-gradient(120% 90% at 85% 0%,rgba(214,180,110,.28),transparent 55%),
  radial-gradient(80% 120% at 0% 100%,rgba(0,0,0,.35),transparent 60%),
  linear-gradient(150deg,#8a1f2e,#5b111c 70%,#3f0b13)}
-.hero::after{content:"";position:absolute;right:-40px;top:-30px;width:260px;height:260px;opacity:.13;background:url(icons/mark-light.svg) no-repeat center/contain}
+.hero::after{content:"";position:absolute;right:-30px;top:-24px;width:290px;height:290px;opacity:.22;background:url(icons/mark-light.png) no-repeat center/contain}
 .hero .eyebrow{color:#e7c98a}
 .hero h1{font-family:var(--display);font-weight:600;font-size:clamp(38px,8vw,60px);line-height:1;margin:8px 0 14px}
 .hero blockquote{margin:0;max-width:36rem;font-family:var(--display);font-style:italic;font-weight:500;font-size:clamp(19px,2.6vw,23px);line-height:1.35;color:#f3e6d3}
@@ -293,3 +293,26 @@ mark.hit.cur{outline:2px solid var(--accent);outline-offset:1px}
 @media print{.topbar,.tabbar,.sidebar,.ractions,.endnav,#progress,.hitbar{display:none!important}main{padding:0}.prose{font-size:12pt}}
 
 .language-switch{font:600 12px var(--sans);padding:8px 10px;border:1px solid var(--line,#ddd);border-radius:20px;text-decoration:none;color:inherit;white-space:nowrap}.draft-banner{text-align:center;padding:8px 16px;background:#f2e4c8;color:#523e25;font:500 12px var(--sans)}.edition-note{font:400 14px/1.6 var(--sans);padding:16px;background:var(--card,#f6f0e8);border:1px solid var(--line,#ddd);border-radius:12px;margin-bottom:28px}.edition-note p{margin:8px 0}.constitution-ref{text-decoration:underline}@media(max-width:430px){.brand small{display:none}.brand b{font-size:17px}.topactions{gap:2px}}
+
+/* Unified note system: inline markers, endnotes and note dialog. */
+.prose a.footnote-ref{font-family:var(--sans);font-size:.68em;font-weight:600;line-height:0;vertical-align:super;text-decoration:none;padding:2px 3px;margin:0 1px;border-radius:3px;white-space:nowrap}
+.prose a.footnote-ref:hover,.prose a.footnote-ref:focus-visible{background:var(--accent);color:var(--bg,#fff);outline:2px solid var(--accent);outline-offset:2px}
+.prose .footnotes{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line);font:400 15px/1.65 var(--serif)}
+.prose .footnotes h2{font:600 13px/1.4 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 1.25rem}
+.prose .footnote-list{list-style:none;padding:0;margin:0}
+.prose .footnote-item{display:grid;grid-template-columns:2.25rem minmax(0,1fr);gap:.4rem;margin:0 0 1rem;padding:0;scroll-margin-top:6rem}
+.prose .footnote-item>.footnote-backref{font:600 12px/1.9 var(--sans);font-size:12px;text-decoration:none;padding:0}
+.prose .footnote-body{min-width:0;overflow-wrap:anywhere}
+.prose .footnote-body p{font:inherit;margin:0 0 .6em}
+.fntext{font:400 17px/1.7 var(--serif);overflow-wrap:anywhere}
+.fntext .footnote-body{font:inherit}
+.fntext a{color:var(--accent);text-underline-offset:3px}
+.fntext p{font:inherit;margin:0 0 .75em}
+@media(max-width:480px){.prose .footnotes{font-size:14px}.fntext{font-size:16px}}
+
+/* Branding/notes parity with supplied Spanish fix 3; English note semantics retained. */
+.prose .footnotes{margin-top:2.2em;padding-top:.9em;font-size:.82em;line-height:1.5;color:var(--ink2)}
+.prose .footnotes h2{font-family:var(--sans);font-size:.78em;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.6em}
+.prose .footnote-item{grid-template-columns:1.6em minmax(0,1fr);gap:.6em;margin:0 0 .5em}
+.prose .footnote-item>.footnote-backref{font-family:var(--sans);font-size:.9em;font-weight:600;line-height:1.5;color:var(--accent)}
+.prose .footnote-backref::after{content:'.'}
