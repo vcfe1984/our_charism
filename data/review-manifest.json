@@ -64,5 +64,325 @@
     "english_source": "https://ourcharism.org/index.php/2022/10/28/a-marked-eucharistic-devotion/",
     "status": "draft-awaiting-owner-review",
     "constitutions_source": "sources/constitutions-official-en.pdf"
+  },
+  {
+    "spanish_id": "1147",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 1,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 0
+  },
+  {
+    "spanish_id": "498",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 2,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 10
+  },
+  {
+    "spanish_id": "499",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 3,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 23
+  },
+  {
+    "spanish_id": "500",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 4,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 57
+  },
+  {
+    "spanish_id": "505",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 5,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 49
+  },
+  {
+    "spanish_id": "504",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 6,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 41
+  },
+  {
+    "spanish_id": "503",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 7,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 74
+  },
+  {
+    "spanish_id": "501",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 8,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 76
+  },
+  {
+    "spanish_id": "502",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 9,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 98
+  },
+  {
+    "spanish_id": "506",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 10,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 93
+  },
+  {
+    "spanish_id": "507",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 11,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 116
+  },
+  {
+    "spanish_id": "509",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 12,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 118
+  },
+  {
+    "spanish_id": "508",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 13,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 138
+  },
+  {
+    "spanish_id": "510",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 14,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 137
+  },
+  {
+    "spanish_id": "511",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 15,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 124
+  },
+  {
+    "spanish_id": "512",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 16,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 188
+  },
+  {
+    "spanish_id": "515",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 17,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 139
+  },
+  {
+    "spanish_id": "513",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 18,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 125
+  },
+  {
+    "spanish_id": "514",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 19,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 152
+  },
+  {
+    "spanish_id": "516",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 20,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 125
+  },
+  {
+    "spanish_id": "517",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 21,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 177
+  },
+  {
+    "spanish_id": "518",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 22,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 95
+  },
+  {
+    "spanish_id": "519",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 23,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 178
+  },
+  {
+    "spanish_id": "520",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 24,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 89
+  },
+  {
+    "spanish_id": "521",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 25,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 116
+  },
+  {
+    "spanish_id": "522",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 26,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 113
+  },
+  {
+    "spanish_id": "523",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 27,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 93
+  },
+  {
+    "spanish_id": "524",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 28,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 91
+  },
+  {
+    "spanish_id": "525",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 29,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 70
+  },
+  {
+    "spanish_id": "497",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 30,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 72
+  },
+  {
+    "spanish_id": "557",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 31,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 97
+  },
+  {
+    "spanish_id": "558",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 32,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 91
+  },
+  {
+    "spanish_id": "559",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 33,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 91
+  },
+  {
+    "spanish_id": "560",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 34,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 87
+  },
+  {
+    "spanish_id": "561",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 35,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 125
+  },
+  {
+    "spanish_id": "562",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 36,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 96
+  },
+  {
+    "spanish_id": "563",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 37,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 113
+  },
+  {
+    "spanish_id": "564",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 38,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 153
+  },
+  {
+    "spanish_id": "566",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 39,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 116
+  },
+  {
+    "spanish_id": "565",
+    "status": "official-source-transcription; editorial review pending",
+    "collection": "Circular Letters",
+    "letter_number": 40,
+    "source_type": "official English print edition supplied by owner",
+    "note_count": 124
   }
 ]

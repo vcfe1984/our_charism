@@ -268,7 +268,7 @@ async function viewHome() {
 
 function viewSections() {
   setChrome('secciones');
-  view.innerHTML = `<div class="wrap fade-in"><div class="sechead"><div><div class="eyebrow">Index</div><h1 class="title">Sections</h1><p class="lede">The first English review batch: eleven articles on our charism. The full Spanish library remains available.</p></div></div>
+  view.innerHTML = `<div class="wrap fade-in"><div class="sechead"><div><div class="eyebrow">Index</div><h1 class="title">Sections</h1><p class="lede">English articles on our charism, including Circular Letters grouped by year.</p></div></div>
     <div class="secgrid">${IDX.sections.map((s, i) => `<a class="card sec" href="#/s/${i}"><span class="ic">${icon(s.i)}</span><em>${s.n}</em><b>${esc(s.t)}</b><small>${esc(s.s)}</small></a>`).join('')}
     <a class="card sec" href="#/recientes"><span class="ic">${icon('refresh')}</span><b>Recent</b><small>All articles by publication date</small></a></div></div>`;
 }
@@ -324,7 +324,7 @@ async function viewReader(id, params) {
   const si = sib ? sib.sec : secIndexByName(m.p[0]);
   view.innerHTML = `<article class="reader fade-in"><div class="crumbs">${m.p.map((p, i) => i === 0 && si >= 0 ? `<a href="#/s/${si}">${esc(p)}</a>` : `<span>${esc(p)}</span>`).join('<i>/</i>')}</div>
     <h1>${esc(m.t)}</h1>
-    <div class="rmeta">${m.d && !id.startsWith('pg-') ? `<span>${fmtDate(m.d)}</span>` : ''}${m.w > 40 ? `<span>${mins(m.w)} reading</span>` : ''}${badges(m)}<a href="${esc(m.u)}" target="_blank" rel="noopener">English source ↗</a></div>
+    <div class="rmeta">${m.d && !id.startsWith('pg-') ? `<span>${fmtDate(m.d)}</span>` : ''}${m.w > 40 ? `<span>${mins(m.w)} reading</span>` : ''}${badges(m)}${m.u ? `<a href="${esc(m.u)}" target="_blank" rel="noopener">English source ↗</a>` : `<span>Official English edition · pp. ${m.source_pages.join('–')}</span>`}</div>
     <div class="ractions">
       <button class="iconbtn${favs.includes(id) ? ' on' : ''}" id="favBtn" aria-label="Save">${icon('bookmark')}</button>
       <button class="iconbtn" id="aaBtn" aria-label="Text size">${icon('aa')}</button>
@@ -339,9 +339,9 @@ async function viewReader(id, params) {
   $('#favBtn').onclick = e => { const on = !favs.includes(id); favs = on ? [id, ...favs] : favs.filter(x => x !== id); store.set('favs', favs); e.currentTarget.classList.toggle('on', on); toast(on ? 'Saved to your list' : 'Removed from saved'); renderSidebar('reader'); };
   $('#aaBtn').onclick = openAppearance;
   $('#shareBtn').onclick = async () => {
-    const data = { title: m.t, text: m.t + ' — Our Charism', url: m.u };
+    const data = { title: m.t, text: m.t + ' — Our Charism', url: m.u || (location.origin + location.pathname + '#/p/' + id) };
     if (navigator.share) { try { await navigator.share(data); } catch {} }
-    else { try { await navigator.clipboard.writeText(m.u); toast('Link copied'); } catch { toast(m.u); } }
+    else { try { await navigator.clipboard.writeText(data.url); toast('Link copied'); } catch { toast(data.url); } }
   };
   // prev / next
   if (sib) {
@@ -602,12 +602,12 @@ async function viewSettings() {
     <div class="h2"><h2>Offline</h2></div>
     <div class="card set">
       <div class="row"><div class="lbl"><b>Articles saved on this device</b><small id="dlTxt">${st.have} of ${st.total} (${pct}%)${st.search ? ' · search ready' : ''}</small><div class="bar"><i id="dlBar" style="width:${pct}%"></i></div></div></div>
-      <div class="row"><div class="lbl"><b>Download this language</b><small>Download the eleven English articles for offline reading. The official English Constitutions PDF is included with the app. Other external media needs a connection.</small></div><button class="button" id="dlBtn"${pct >= 100 ? ' disabled style="opacity:.5"' : ''}>${icon('cloud')} ${pct >= 100 ? 'Ready' : 'Download'}</button></div>
+      <div class="row"><div class="lbl"><b>Download this language</b><small>Download the English articles for offline reading. The official English Constitutions PDF is included with the app. Other external media needs a connection.</small></div><button class="button" id="dlBtn"${pct >= 100 ? ' disabled style="opacity:.5"' : ''}>${icon('cloud')} ${pct >= 100 ? 'Ready' : 'Download'}</button></div>
       <div class="row"><div class="lbl"><b>Automatic download</b><small>Save this language in the background when opening the app</small></div><div class="seg" id="autoSeg"><button data-v="1" class="${S.autoDl ? 'on' : ''}">Yes</button><button data-v="0" class="${!S.autoDl ? 'on' : ''}">No</button></div></div>
     </div>
     <div class="h2"><h2>Updates</h2></div>
     <div class="card set">
-      <div class="row"><div class="lbl"><b>Content</b><small>English source snapshot: ${fmtDate(IDX.fetched)} · version ${esc(IDX.v)}</small></div><button class="button ghost" id="updBtn">${icon('refresh')} Search</button></div>
+      <div class="row"><div class="lbl"><b>Content</b><small>Library updated: ${fmtDate(IDX.fetched)} · version ${esc(IDX.v)}</small></div><button class="button ghost" id="updBtn">${icon('refresh')} Search</button></div>
       <div class="row"><div class="lbl"><b>Source website updates</b><small id="newsTxt">Check for later English-source posts</small></div><button class="button ghost" id="newsBtn">Check</button></div>
       <div id="newsList"></div>
     </div>
