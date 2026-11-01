@@ -167,10 +167,11 @@ function badges(m) {
   if (m.f) b += `<span class="badge" title="PDF">${icon('pdf')}</span>`;
   return b ? `<span class="badges">${b}</span>` : '';
 }
+const hasReadingText = m => !['resource-entry','empty-source-entry','official-pdf'].includes(m.entry_kind);
 function itemRow(id, opts = {}) {
   const m = doc(id); if (!m) return '';
   const read = pos[id] != null;
-  const meta = [m.d && !String(id).startsWith('pg-') ? fmtDate(m.d) : '', m.w > 40 ? mins(m.w) : ''].filter(Boolean).join(' · ');
+  const meta = [m.d && !String(id).startsWith('pg-') ? fmtDate(m.d) : '', m.w > 40 && hasReadingText(m) ? mins(m.w) : ''].filter(Boolean).join(' · ');
   return `<a class="item${read ? ' read' : ''}" href="#/p/${id}${opts.q ? '?q=' + encodeURIComponent(opts.q) : ''}">
     ${opts.num != null ? `<span class="num">${opts.num}</span>` : ''}
     <div class="body">${opts.where ? `<div class="where">${esc(m.p.join(' · '))}</div>` : ''}
@@ -229,7 +230,7 @@ async function viewHome() {
       <div class="eyebrow">Institute of the Incarnate Word</div>
       <h1>Our Charism</h1>
       <blockquote>We want to love and serve Jesus Christ – His Body and His Spirit – and to help others love and serve Him.<cite><a href="sources/constitutions-official-en.pdf#page=17" target="_blank" rel="noopener" style="color:inherit">CONSTITUTIONS, N. 7 ↗</a></cite></blockquote>
-      <div class="hero-actions"><button class="searchfake" id="heroSearch">${icon('search')}<span>Search en ${Object.keys(IDX.docs).length} articles…</span></button></div>
+      <div class="hero-actions"><button class="searchfake" id="heroSearch">${icon('search')}<span>Search in ${Object.keys(IDX.docs).length} entries…</span></button></div>
     </section>
     ${last ? `<a class="card continue" href="#/p/${last.id}"><div class="ring" style="--p:${Math.round(pos[last.id] || 0)}"><span>${Math.round(pos[last.id] || 0)}%</span></div><div><small>Continue reading</small><b>${esc(doc(last.id).t)}</b><small>${esc(doc(last.id).p.join(' · '))}</small></div></a>` : ''}
     <div class="h2"><h2>Reading of the day</h2><a href="#" id="rndBtn">Another reading ↻</a></div>
@@ -239,11 +240,11 @@ async function viewHome() {
     <div class="h2"><h2>Sections</h2></div>
     <div class="secgrid">${IDX.sections.map((s, i) => `<a class="card sec" href="#/s/${i}"><span class="ic">${icon(s.i)}</span><em>${s.n}</em><b>${esc(s.t)}</b><small>${esc(s.s)}</small></a>`).join('')}
     </div>
-    <div class="h2"><h2>Articles in this draft</h2><a href="#/recientes">View all →</a></div>
+    <div class="h2"><h2>Latest entries</h2><a href="#/recientes">View all →</a></div>
     <div class="card"><div class="list" style="padding:0 14px">${recent.map(([k]) => itemRow(k, { where: true })).join('')}</div></div>
   </div>`;
   $('#heroSearch').onclick = () => location.hash = '#/buscar';
-  const pool = ORDER.filter(id => { const m = doc(id); return m && m.w > 300 && ['Writings', 'Homilies', 'Founder', 'Non-negotiables', 'Circular letters', 'Conferences', 'St. John of the Cross'].includes(m.p[0]); });
+  const pool = ORDER.filter(id => { const m = doc(id); return m && m.w > 300 && ['Writings', 'Homilies', 'Founder', 'The Founder', 'Non-negotiables', 'Circular letters', 'Conferences', 'St. John of the Cross'].includes(m.p[0]); });
   let seed = dayHash();
   const showDaily = async (rand) => {
     const box = $('#daily'); if (!box) return;
@@ -268,7 +269,7 @@ async function viewHome() {
 
 function viewSections() {
   setChrome('secciones');
-  view.innerHTML = `<div class="wrap fade-in"><div class="sechead"><div><div class="eyebrow">Index</div><h1 class="title">Sections</h1><p class="lede">English articles on our charism, including Circular Letters grouped by year.</p></div></div>
+  view.innerHTML = `<div class="wrap fade-in"><div class="sechead"><div><div class="eyebrow">Index</div><h1 class="title">Sections</h1><p class="lede">The English library: reading texts and linked resources, with Circular Letters grouped by year.</p></div></div>
     <div class="secgrid">${IDX.sections.map((s, i) => `<a class="card sec" href="#/s/${i}"><span class="ic">${icon(s.i)}</span><em>${s.n}</em><b>${esc(s.t)}</b><small>${esc(s.s)}</small></a>`).join('')}
     <a class="card sec" href="#/recientes"><span class="ic">${icon('refresh')}</span><b>Recent</b><small>All articles by publication date</small></a></div></div>`;
 }
@@ -299,7 +300,7 @@ function viewSection(si, sort) {
     body = plain ? `<div class="card">${renderItems(s.items, 0)}</div>` : renderItems(s.items, 0);
   }
   view.innerHTML = `<div class="wrap fade-in">
-    <div class="sechead"><span class="ic">${icon(s.i)}</span><div><div class="eyebrow">${s.n} articles</div><h1 class="title">${esc(s.t)}</h1><p class="lede">${esc(s.s)}</p></div></div>
+    <div class="sechead"><span class="ic">${icon(s.i)}</span><div><div class="eyebrow">${s.n} entries</div><h1 class="title">${esc(s.t)}</h1><p class="lede">${esc(s.s)}</p></div></div>
     <div class="toolbar"><a class="chip${sort !== 'fecha' ? ' on' : ''}" href="#/s/${si}">Source order</a><a class="chip${sort === 'fecha' ? ' on' : ''}" href="#/s/${si}?orden=fecha">Most recent</a><span class="sp"></span><a class="chip" href="#/buscar?sec=${si}">${icon('search')} Search this section</a></div>
     ${body}</div>`;
 }
@@ -311,7 +312,7 @@ function viewRecent() {
   const chunks = [];
   ids.forEach(id => { const y = doc(id).d.slice(0, 4); if (y !== curY) { chunks.push({ y, ids: [] }); curY = y; } chunks[chunks.length - 1].ids.push(id); });
   html = chunks.map(c => `<details class="card group"${c === chunks[0] ? ' open' : ''}><summary>${icon('chev')}<b>${c.y}</b><em>${c.ids.length}</em></summary><div class="list">${c.ids.map(id => itemRow(id, { where: true, x: false })).join('')}</div></details>`).join('');
-  view.innerHTML = `<div class="wrap fade-in"><div class="sechead"><span class="ic">${icon('refresh')}</span><div><div class="eyebrow">${ids.length} articles</div><h1 class="title">By date</h1><p class="lede">Articles ordered by their source publication date.</p></div></div>${html}</div>`;
+  view.innerHTML = `<div class="wrap fade-in"><div class="sechead"><span class="ic">${icon('refresh')}</span><div><div class="eyebrow">${ids.length} entries</div><h1 class="title">By date</h1><p class="lede">Articles ordered by their source publication date.</p></div></div>${html}</div>`;
 }
 
 // ---------- reader
@@ -324,7 +325,7 @@ async function viewReader(id, params) {
   const si = sib ? sib.sec : secIndexByName(m.p[0]);
   view.innerHTML = `<article class="reader fade-in"><div class="crumbs">${m.p.map((p, i) => i === 0 && si >= 0 ? `<a href="#/s/${si}">${esc(p)}</a>` : `<span>${esc(p)}</span>`).join('<i>/</i>')}</div>
     <h1>${esc(m.t)}</h1>
-    <div class="rmeta">${m.d && !id.startsWith('pg-') ? `<span>${fmtDate(m.d)}</span>` : ''}${m.w > 40 ? `<span>${mins(m.w)} reading</span>` : ''}${badges(m)}${m.u ? `<a href="${esc(m.u)}" target="_blank" rel="noopener">English source ↗</a>` : `<span>Official English edition · pp. ${m.source_pages.join('–')}</span>`}</div>
+    <div class="rmeta">${m.d && !id.startsWith('pg-') ? `<span>${fmtDate(m.d)}</span>` : ''}${m.w > 40 && hasReadingText(m) ? `<span>${mins(m.w)} reading</span>` : ''}${badges(m)}${m.source_type === 'user-supplied-working-translation' ? '<span>Working English translation</span>' : ''}${m.u ? `<a href="${esc(m.u)}" target="_blank" rel="noopener">${m.source_type === 'user-supplied-working-translation' ? 'Spanish original ↗' : 'English source ↗'}</a>` : `<span>Official English edition · pp. ${(m.source_pages || []).join('–')}</span>`}</div>
     <div class="ractions">
       <button class="iconbtn${favs.includes(id) ? ' on' : ''}" id="favBtn" aria-label="Save">${icon('bookmark')}</button>
       <button class="iconbtn" id="aaBtn" aria-label="Text size">${icon('aa')}</button>
@@ -457,7 +458,7 @@ function viewSearch(params) {
   let sec = params.has('sec') ? params.get('sec') : lastSearch.sec;
   let titles = lastSearch.titles;
   view.innerHTML = `<div class="wrap fade-in">
-    <div class="searchbox"><label class="sfield">${icon('search')}<input id="q" type="search" placeholder="Search English articles…" autocomplete="off" enterkeyhint="search" value="${esc(q0)}"></label>
+    <div class="searchbox"><label class="sfield">${icon('search')}<input id="q" type="search" placeholder="Search English entries…" autocomplete="off" enterkeyhint="search" value="${esc(q0)}"></label>
       <div class="filters" id="filters"></div></div>
     <div id="sinfo" class="sinfo"></div><div id="results"></div></div>`;
   const input = $('#q');
@@ -479,7 +480,7 @@ function viewSearch(params) {
     const info = $('#sinfo'), out = $('#results');
     if (q.length < 2) {
       info.textContent = '';
-      out.innerHTML = `<div class="tips"><p>Search words or phrases across ${Object.keys(IDX.docs).length} articles — regardless of accents or case.</p>
+      out.innerHTML = `<div class="tips"><p>Search words or phrases across ${Object.keys(IDX.docs).length} entries — regardless of accents or case.</p>
       <p>• <code>"religious life"</code> finds the exact phrase<br>• <code>incarnation culture</code> encuentra articles con ambas palabras<br>• <code>-joy</code> excludes a word</p>
       ${hist.length ? `<div class="h2"><h2>Recently read</h2></div><div class="card"><div class="list" style="padding:0 14px">${hist.slice(0, 5).filter(h => doc(h.id)).map(h => itemRow(h.id, { where: true, x: false })).join('')}</div></div>` : ''}</div>`;
       return;
@@ -490,7 +491,7 @@ function viewSearch(params) {
     let res = r.results;
     if (sec !== '') res = res.filter(x => (SIBS[x.id] ? SIBS[x.id].sec : secIndexByName(doc(x.id).p[0])) === Number(sec));
     const tot = sec !== '' ? res.length : r.total;
-    info.textContent = tot ? `${tot} ${tot === 1 ? 'article' : 'articles'}${tot > res.length ? ` (showing ${res.length})` : ''} · ${r.ms} ms` : '';
+    info.textContent = tot ? `${tot} ${tot === 1 ? 'entry' : 'entries'}${tot > res.length ? ` (showing ${res.length})` : ''} · ${r.ms} ms` : '';
     out.innerHTML = res.length ? `<div class="card res"><div class="list" style="padding:0 14px">${res.map(x => itemRow(x.id, { q, where: true, titleHtml: markText(doc(x.id).t, r.needles), xHtml: applyMarks(x.s, x.h) })).join('')}</div></div>` : `<div class="empty">No results for «${esc(q)}».</div>`;
   };
   input.oninput = () => { clearTimeout(tmr); tmr = setTimeout(go, 220); };
@@ -525,7 +526,7 @@ function viewTopics() {
 function viewTheme(t) {
   setChrome('temas', true);
   const ids = (IDX.tags[t] || []).slice().sort((a, b) => doc(b).d.localeCompare(doc(a).d));
-  view.innerHTML = `<div class="wrap fade-in"><div class="sechead"><span class="ic">${icon('tag')}</span><div><div class="eyebrow"><a href="#/temas" style="text-decoration:none">Topics</a></div><h1 class="title">${esc(t)}</h1><p class="lede">${ids.length} ${ids.length === 1 ? 'article' : 'articles'}</p></div></div>
+  view.innerHTML = `<div class="wrap fade-in"><div class="sechead"><span class="ic">${icon('tag')}</span><div><div class="eyebrow"><a href="#/temas" style="text-decoration:none">Topics</a></div><h1 class="title">${esc(t)}</h1><p class="lede">${ids.length} ${ids.length === 1 ? 'entry' : 'entries'}</p></div></div>
   <div class="card"><div class="list" style="padding:0 14px">${ids.map(id => itemRow(id, { where: true })).join('')}</div></div></div>`;
 }
 
@@ -602,8 +603,8 @@ async function viewSettings() {
     <div class="h2"><h2>Offline</h2></div>
     <div class="card set">
       <div class="row"><div class="lbl"><b>Articles saved on this device</b><small id="dlTxt">${st.have} of ${st.total} (${pct}%)${st.search ? ' · search ready' : ''}</small><div class="bar"><i id="dlBar" style="width:${pct}%"></i></div></div></div>
-      <div class="row"><div class="lbl"><b>Download this language</b><small>Download the English articles for offline reading. The official English Constitutions PDF is included with the app. Other external media needs a connection.</small></div><button class="button" id="dlBtn"${pct >= 100 ? ' disabled style="opacity:.5"' : ''}>${icon('cloud')} ${pct >= 100 ? 'Ready' : 'Download'}</button></div>
-      <div class="row"><div class="lbl"><b>Automatic download</b><small>Save this language in the background when opening the app</small></div><div class="seg" id="autoSeg"><button data-v="1" class="${S.autoDl ? 'on' : ''}">Yes</button><button data-v="0" class="${!S.autoDl ? 'on' : ''}">No</button></div></div>
+      <div class="row"><div class="lbl"><b>Download library</b><small>Download the English articles for offline reading. The official English Constitutions PDF is included with the app. Other external media needs a connection.</small></div><button class="button" id="dlBtn"${pct >= 100 ? ' disabled style="opacity:.5"' : ''}>${icon('cloud')} ${pct >= 100 ? 'Ready' : 'Download'}</button></div>
+      <div class="row"><div class="lbl"><b>Automatic download</b><small>Save the library in the background when opening the app</small></div><div class="seg" id="autoSeg"><button data-v="1" class="${S.autoDl ? 'on' : ''}">Yes</button><button data-v="0" class="${!S.autoDl ? 'on' : ''}">No</button></div></div>
     </div>
     <div class="h2"><h2>Updates</h2></div>
     <div class="card set">
@@ -614,7 +615,7 @@ async function viewSettings() {
     <div class="h2"><h2>Install</h2></div>
     <div class="card set"><div class="row"><div class="lbl"><b>Add to Home Screen</b><small>iPhone/iPad: Safari → Share → Add to Home Screen. Android/Chrome: menu → Install app.</small></div>${deferredInstall ? '<button class="button" id="instBtn">Install</button>' : ''}</div></div>
     <div class="h2"><h2>About</h2></div><p><a class="button ghost" href="sources/constitutions-official-en.pdf" target="_blank" rel="noopener">Official English Constitutions ↗</a></p>
-    <div class="card set"><div class="row"><div class="lbl"><small style="font-size:14px;line-height:1.6;display:block;font-family:var(--serif)">English articles come from <a href="${SITE}" target="_blank" rel="noopener">ourcharism.org</a>, sharing the charism and spiritual heritage of the Institute of the Incarnate Word. This English review draft is awaiting final approval.</small></div></div>
+    <div class="card set"><div class="row"><div class="lbl"><small style="font-size:14px;line-height:1.6;display:block;font-family:var(--serif)">This library includes the official English Circular Letters and Constitutions supplied for this app, working translations supplied by the owner, and articles from <a href="${SITE}" target="_blank" rel="noopener">ourcharism.org</a>. Working translations are not official editions and remain subject to review. Linked external media may be in Spanish.</small></div></div>
     <div class="row"><div class="lbl"><b>Reset</b><small>Clear reading history, positions and shared favorites</small></div><button class="button ghost" id="rstBtn">Reset</button></div></div>
   </div>`;
   $('#appBtn').onclick = openAppearance;
@@ -624,7 +625,7 @@ async function viewSettings() {
     if (!navigator.onLine) return toast('Connect to the internet to download');
     $('#dlBtn').disabled = true;
     const r = await downloadAll();
-    toast(r.failed ? `Downloaded ${r.done} of ${r.total}. Some downloads failed; please retry.` : 'This language is ready for offline reading');
+    toast(r.failed ? `Downloaded ${r.done} of ${r.total}. Some downloads failed; please retry.` : 'The library is ready for offline reading');
     if (location.hash === '#/ajustes') viewSettings();
   };
   $('#updBtn').onclick = async () => {
@@ -711,13 +712,13 @@ function setupSW() {
 // ------------------------------------------------------------------ boot
 (async () => {
   try { await loadIndex(); }
-  catch { view.innerHTML = '<div class="empty">Could not load this language. Connect and try again.</div>'; return; }
+  catch { view.innerHTML = '<div class="empty">Could not load the library. Connect and try again.</div>'; return; }
   route();
   setupSW();
   if (S.autoDl && navigator.onLine && 'caches' in window) {
     setTimeout(async () => {
       const st = await cacheStatus();
-      if (st.have < st.total) downloadAll().then(r => { if (r.done >= r.total && st.have < st.total * 0.5) toast('This language is ready for offline reading'); });
+      if (st.have < st.total) downloadAll().then(r => { if (r.done >= r.total && st.have < st.total * 0.5) toast('The library is ready for offline reading'); });
     }, 3500);
   }
   // warm the search index in idle time

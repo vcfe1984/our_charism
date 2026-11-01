@@ -205,7 +205,7 @@ h1.title{font-family:var(--display);font-weight:600;font-size:clamp(34px,6vw,50p
 :root[data-theme="dark"] .prose .btn{color:#1a1310}
 .prose a.pdf{display:flex;align-items:center;gap:12px;margin:1em 0;padding:14px 16px;border:1px solid var(--line);border-radius:14px;background:var(--card);text-decoration:none;color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.3;box-shadow:var(--shadow)}
 .prose a.pdf::before{content:"PDF";flex:none;display:grid;place-items:center;width:42px;height:50px;border-radius:6px;background:var(--accent);color:#fff;font-size:11px;font-weight:600;letter-spacing:.06em}
-.prose a.pdf::after{content:"Abrir ↗";margin-left:auto;color:var(--accent);font-size:13px;white-space:nowrap}
+.prose a.pdf::after{content:"Open ↗";margin-left:auto;color:var(--accent);font-size:13px;white-space:nowrap}
 .m-audio{margin:1em 0;padding:12px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
 .m-audio audio{width:100%;display:block}
 .m-video video{width:100%;border-radius:14px;background:#000}
@@ -316,3 +316,9 @@ mark.hit.cur{outline:2px solid var(--accent);outline-offset:1px}
 .prose .footnote-item{grid-template-columns:1.6em minmax(0,1fr);gap:.6em;margin:0 0 .5em}
 .prose .footnote-item>.footnote-backref{font-family:var(--sans);font-size:.9em;font-weight:600;line-height:1.5;color:var(--accent)}
 .prose .footnote-backref::after{content:'.'}
+
+.official-document{width:100%;height:72vh;border:1px solid var(--line);border-radius:8px}.resource-note{font:400 14px/1.6 var(--sans);padding:12px;border-left:3px solid var(--gold);color:var(--ink2)}
+
+.official-document{width:100%;height:72vh;border:1px solid var(--line);border-radius:8px}.resource-note{font:400 14px/1.6 var(--sans);padding:12px;border-left:3px solid var(--gold);color:var(--ink2)}
+
+.official-document{width:100%;height:72vh;border:1px solid var(--line);border-radius:8px}.resource-note{font:400 14px/1.6 var(--sans);padding:12px;border-left:3px solid var(--gold);color:var(--ink2)}
