@@ -1,18 +1,18 @@
 /* Service worker — Nuestro Carisma. VERSION lines are stamped by tools/build.py */
-const DATA = 'english-tree-c259b056fe';
-const SHELL = 'english-tree-ui-cfb4e5d1f9';
-const SHELL_CACHE = 'nc-draft-shell-' + SHELL;
-const DATA_CACHE = 'nc-draft-data-' + DATA;
-const IMG_CACHE = 'nc-draft-img';
+const DATA = 'simon-jude-oct28-c651f6a59e';
+const SHELL = 'simon-jude-oct28-c651f6a59e-shell';
+const SHELL_CACHE = 'nc-shell-' + SHELL;
+const DATA_CACHE = 'nc-data-' + DATA;
+const IMG_CACHE = 'nc-img';
 const SHELL_FILES = [
   './', 'index.html', 'styles.css', 'app.js', 'search-worker.js', 'manifest.webmanifest',
-  'icons/icon.svg', 'icons/logo.png', 'icons/mark-light.png', 'icons/icon-maskable-512.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
+  'icons/icon.svg', 'icons/mark-light.png', 'icons/logo.png', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
   'fonts/source-serif-4-latin-400-normal.woff2', 'fonts/source-serif-4-latin-400-italic.woff2',
   'fonts/source-serif-4-latin-600-normal.woff2', 'fonts/source-serif-4-latin-600-italic.woff2',
   'fonts/cormorant-garamond-latin-500-normal.woff2', 'fonts/cormorant-garamond-latin-500-italic.woff2',
   'fonts/cormorant-garamond-latin-600-normal.woff2', 'fonts/cormorant-garamond-latin-600-italic.woff2',
   'fonts/inter-latin-400-normal.woff2', 'fonts/inter-latin-500-normal.woff2', 'fonts/inter-latin-600-normal.woff2',
-  'data/index.json', 'draft.js', 'sources/constitutions-official-en.pdf'
+  'data/index.json'
 ];
 
 self.addEventListener('install', e => {
@@ -21,7 +21,7 @@ self.addEventListener('install', e => {
 self.addEventListener('activate', e => {
   e.waitUntil((async () => {
     const keep = [SHELL_CACHE, DATA_CACHE, IMG_CACHE];
-    for (const k of await caches.keys()) if (k.startsWith('nc-draft-shell-') && k !== SHELL_CACHE) await caches.delete(k);
+    for (const k of await caches.keys()) if (!keep.includes(k)) await caches.delete(k);
     await self.clients.claim();
   })());
 });
@@ -33,7 +33,7 @@ self.addEventListener('fetch', e => {
   const url = new URL(req.url);
   if (url.origin === location.origin) {
     const p = url.pathname;
-    if (p.includes('/data/c/') || p.endsWith('/search.json')) {
+    if (p.includes('/data/c/') || p.endsWith('/data/search.json')) {
       e.respondWith((async () => {
         const c = await caches.open(DATA_CACHE);
         const hit = await c.match(req, { ignoreSearch: true });
