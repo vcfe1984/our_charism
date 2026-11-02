@@ -1,1 +1,1 @@
-(() => {const b=document.createElement('div');b.className='draft-banner';b.textContent='English review draft · 339 entries · awaiting final review';document.querySelector('.shell').before(b);})();
+/* The global review-draft banner has been removed. */

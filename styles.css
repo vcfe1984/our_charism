@@ -292,7 +292,7 @@ mark.hit.cur{outline:2px solid var(--accent);outline-offset:1px}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media print{.topbar,.tabbar,.sidebar,.ractions,.endnav,#progress,.hitbar{display:none!important}main{padding:0}.prose{font-size:12pt}}
 
-.language-switch{font:600 12px var(--sans);padding:8px 10px;border:1px solid var(--line,#ddd);border-radius:20px;text-decoration:none;color:inherit;white-space:nowrap}.draft-banner{text-align:center;padding:8px 16px;background:#f2e4c8;color:#523e25;font:500 12px var(--sans)}.edition-note{font:400 14px/1.6 var(--sans);padding:16px;background:var(--card,#f6f0e8);border:1px solid var(--line,#ddd);border-radius:12px;margin-bottom:28px}.edition-note p{margin:8px 0}.constitution-ref{text-decoration:underline}@media(max-width:430px){.brand small{display:none}.brand b{font-size:17px}.topactions{gap:2px}}
+.language-switch{font:600 12px var(--sans);padding:8px 10px;border:1px solid var(--line,#ddd);border-radius:20px;text-decoration:none;color:inherit;white-space:nowrap}.edition-note{font:400 14px/1.6 var(--sans);padding:16px;background:var(--card,#f6f0e8);border:1px solid var(--line,#ddd);border-radius:12px;margin-bottom:28px}.edition-note p{margin:8px 0}.constitution-ref{text-decoration:underline}@media(max-width:430px){.brand small{display:none}.brand b{font-size:17px}.topactions{gap:2px}}
 
 /* Unified note system: inline markers, endnotes and note dialog. */
 .prose a.footnote-ref{font-family:var(--sans);font-size:.68em;font-weight:600;line-height:0;vertical-align:super;text-decoration:none;padding:2px 3px;margin:0 1px;border-radius:3px;white-space:nowrap}
@@ -328,3 +328,5 @@ mark.hit.cur{outline:2px solid var(--accent);outline-offset:1px}
 .official-document{width:100%;height:72vh;border:1px solid var(--line);border-radius:8px}.resource-note{font:400 14px/1.6 var(--sans);padding:12px;border-left:3px solid var(--gold);color:var(--ink2)}
 
 .official-document{width:100%;height:72vh;border:1px solid var(--line);border-radius:8px}.resource-note{font:400 14px/1.6 var(--sans);padding:12px;border-left:3px solid var(--gold);color:var(--ink2)}
+
+.catalogue-note{font:400 13px/1.5 var(--sans);color:var(--ink2);margin-top:10px}.translation-pending{opacity:.8}.translation-pending .it-m a{color:inherit;text-decoration:underline;text-underline-offset:2px}

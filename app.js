@@ -181,9 +181,12 @@ function itemRow(id, opts = {}) {
     </div><span class="chev">${icon('chev')}</span></a>`;
 }
 function extRow(it) {
-  return `<a class="item" href="${esc(it.ext)}" target="_blank" rel="noopener"><div class="body"><div class="it-t">${esc(it.t)}</div><div class="it-m"><span>${it.kind === 'pdf' ? 'PDF on the source website' : 'External link'}</span><span class="badges"><span class="badge">${icon(it.kind === 'pdf' ? 'pdf' : 'ext')}</span></span></div></div><span class="chev">${icon('ext')}</span></a>`;
+  return `<a class="item" href="${esc(it.ext)}" target="_blank" rel="noopener"><div class="body"><div class="it-t">${esc(it.t)}</div><div class="it-m"><span>${it.source_language === 'Spanish' ? 'Spanish source resource' : it.kind === 'pdf' ? 'PDF on the source website' : 'External link'}</span><span class="badges"><span class="badge">${icon(it.kind === 'pdf' ? 'pdf' : 'ext')}</span></span></div></div><span class="chev">${icon('ext')}</span></a>`;
 }
 
+function pendingRow(it) {
+  return `<div class="item translation-pending" data-source-id="${esc(it.source_id)}"><div class="body"><div class="it-t">${esc(it.t)}</div><div class="it-m">English text pending · <a href="${esc(it.u)}" target="_blank" rel="noopener">Spanish original ↗</a></div></div></div>`;
+}
 function renderSidebar(cur) {
   const sb = $('#sidebar');
   const l = (href, ic, t, n, key) => `<a href="${href}" class="${cur === key ? 'cur' : ''}">${icon(ic)}<span>${esc(t)}</span>${n != null ? `<em>${n}</em>` : ''}</a>`;
@@ -235,8 +238,8 @@ async function viewHome() {
     ${last ? `<a class="card continue" href="#/p/${last.id}"><div class="ring" style="--p:${Math.round(pos[last.id] || 0)}"><span>${Math.round(pos[last.id] || 0)}%</span></div><div><small>Continue reading</small><b>${esc(doc(last.id).t)}</b><small>${esc(doc(last.id).p.join(' · '))}</small></div></a>` : ''}
     <div class="h2"><h2>Reading of the day</h2><a href="#" id="rndBtn">Another reading ↻</a></div>
     <div id="daily"><div class="card randomcard"><div class="eyebrow">Loading…</div></div></div>
-    ${feasts.length ? `<div class="h2"><h2>Próximas fiestas</h2><a href="#/s/${secIndexByName('Liturgy')}">Liturgy →</a></div>
-    <div class="hscroll">${feasts.map(f => `<a class="card feast${f.diff === 0 ? ' today' : ''}" href="#/p/${f.id}"><div class="date"><b>${f.d}</b><span>${MSHORT[f.mo - 1]}</span></div><div class="nm">${esc(f.t)}</div><div class="tag">${f.diff === 0 ? 'Hoy' : f.diff === 1 ? 'Mañana' : 'En ' + f.diff + ' días'}</div></a>`).join('')}</div>` : ''}
+    ${feasts.length ? `<div class="h2"><h2>Upcoming feasts</h2><a href="#/s/${secIndexByName('Liturgy')}">Liturgy →</a></div>
+    <div class="hscroll">${feasts.map(f => `<a class="card feast${f.diff === 0 ? ' today' : ''}" href="#/p/${f.id}"><div class="date"><b>${f.d}</b><span>${MSHORT[f.mo - 1]}</span></div><div class="nm">${esc(f.t)}</div><div class="tag">${f.diff === 0 ? 'Today' : f.diff === 1 ? 'Tomorrow' : 'In ' + f.diff + ' days'}</div></a>`).join('')}</div>` : ''}
     <div class="h2"><h2>Sections</h2></div>
     <div class="secgrid">${IDX.sections.map((s, i) => `<a class="card sec" href="#/s/${i}"><span class="ic">${icon(s.i)}</span><em>${s.n}</em><b>${esc(s.t)}</b><small>${esc(s.s)}</small></a>`).join('')}
     </div>
@@ -274,7 +277,7 @@ function viewSections() {
     <a class="card sec" href="#/recientes"><span class="ic">${icon('refresh')}</span><b>Recent</b><small>All articles by publication date</small></a></div></div>`;
 }
 
-function countIn(items) { let n = 0; items.forEach(i => { if (i.g) n += countIn(i.g); else if (i.id != null || i.ext) n++; }); return n; }
+function countIn(items) { let n = 0; items.forEach(i => { if (i.g) n += countIn(i.g); else if (i.id != null || i.ext || i.pending) n++; }); return n; }
 function viewSection(si, sort) {
   const s = IDX.sections[si]; if (!s) return viewNotFound();
   setChrome('s' + si, true);
@@ -284,6 +287,7 @@ function viewSection(si, sort) {
     const flush = () => { if (run.length) { html += `<div class="list"${depth ? '' : ' style="padding:0 14px"'}>${run.join('')}</div>`; run = []; } };
     items.forEach(it => {
       if (it.g) { flush(); html += `<details class="card group"${openAll || depth ? ' open' : ''}><summary>${icon('chev')}<b>${esc(it.t)}</b><em>${countIn(it.g)}</em></summary>${renderItems(it.g, depth + 1)}</details>`; }
+      else if (it.pending) run.push(pendingRow(it));
       else if (it.ext) run.push(extRow(it));
       else if (it.id != null) run.push(itemRow(it.id, { t: it.t, x: false }));
     });
@@ -292,15 +296,15 @@ function viewSection(si, sort) {
   };
   let body;
   if (sort === 'fecha') {
-    const ids = []; const w = items => items.forEach(i => { if (i.g) w(i.g); else if (i.id != null) ids.push(String(i.id)); }); w(s.items);
-    const uniq = [...new Set(ids)].sort((a, b) => doc(b).d.localeCompare(doc(a).d));
-    body = `<div class="card"><div class="list" style="padding:0 14px">${uniq.map(id => itemRow(id, { where: true })).join('')}</div></div>`;
+    const rows = []; const w = items => items.forEach(i => { if (i.g) w(i.g); else rows.push(i); }); w(s.items);
+    rows.sort((a, b) => (b.id != null ? doc(b.id).d : b.d || '').localeCompare(a.id != null ? doc(a.id).d : a.d || ''));
+    body = `<div class="card"><div class="list" style="padding:0 14px">${rows.map(i => i.pending ? pendingRow(i) : i.ext ? extRow(i) : itemRow(i.id, { where: true })).join('')}</div></div>`;
   } else {
     const plain = s.items.every(i => !i.g);
     body = plain ? `<div class="card">${renderItems(s.items, 0)}</div>` : renderItems(s.items, 0);
   }
   view.innerHTML = `<div class="wrap fade-in">
-    <div class="sechead"><span class="ic">${icon(s.i)}</span><div><div class="eyebrow">${s.n} entries</div><h1 class="title">${esc(s.t)}</h1><p class="lede">${esc(s.s)}</p></div></div>
+    <div class="sechead"><span class="ic">${icon(s.i)}</span><div><div class="eyebrow">${s.n} catalogue entries · ${s.english_entries ?? s.n} in English</div><h1 class="title">${esc(s.t)}</h1><p class="lede">${esc(s.s)}</p><p class="catalogue-note">The tree follows the Spanish app. Entries awaiting English text are marked below.</p></div></div>
     <div class="toolbar"><a class="chip${sort !== 'fecha' ? ' on' : ''}" href="#/s/${si}">Source order</a><a class="chip${sort === 'fecha' ? ' on' : ''}" href="#/s/${si}?orden=fecha">Most recent</a><span class="sp"></span><a class="chip" href="#/buscar?sec=${si}">${icon('search')} Search this section</a></div>
     ${body}</div>`;
 }
@@ -489,7 +493,7 @@ function viewSearch(params) {
     const r = await runSearch(q, titles);
     if (input.value.trim() !== q) return;
     let res = r.results;
-    if (sec !== '') res = res.filter(x => (SIBS[x.id] ? SIBS[x.id].sec : secIndexByName(doc(x.id).p[0])) === Number(sec));
+    if (sec !== '') res = res.filter(x => doc(x.id).p.includes(IDX.sections[Number(sec)]?.t));
     const tot = sec !== '' ? res.length : r.total;
     info.textContent = tot ? `${tot} ${tot === 1 ? 'entry' : 'entries'}${tot > res.length ? ` (showing ${res.length})` : ''} · ${r.ms} ms` : '';
     out.innerHTML = res.length ? `<div class="card res"><div class="list" style="padding:0 14px">${res.map(x => itemRow(x.id, { q, where: true, titleHtml: markText(doc(x.id).t, r.needles), xHtml: applyMarks(x.s, x.h) })).join('')}</div></div>` : `<div class="empty">No results for «${esc(q)}».</div>`;
